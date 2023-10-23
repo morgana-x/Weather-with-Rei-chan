@@ -1,0 +1,32 @@
+body {
+  background-color: powderblue;
+}
+h1 {
+  color: blue;
+}
+p {
+  color: red;
+}
+
+
+.background_image {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+}
+.rei_body_image {
+  position: relative;
+  margin: 42px;
+}
+.rei_eye_image {
+  position: relative;
+  margin: 42px;
+  left: -380px;
+  top: -435px;
+}
+.rei_mouth_image {
+  position: relative;
+  margin: 42px;
+  left: -555px;
+  top: -410px;
+}
