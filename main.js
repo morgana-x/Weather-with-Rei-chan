@@ -60,11 +60,60 @@ const Enum_Background_Weather = {
 	Snowy:6
 }
 
+const iconTranslationsImage = {
+	"partly-cloudy-night": "eva_we22_0001.png",
+	"partly-cloudy-day": "eva_we06_0001.png",
+	"cloudy": "eva_we02_0001.png",
+	"clear-night": "eva_we05_0001.png",
+	"clear-day": "eva_we01_0001.png",
+	"rain": "eva_we03_0001.png",
+	"thunder-rain": "eva_we03_0001.png",
+	"thunder-showers-day": "eva_we09_0001.png",
+	"thunder-showers-night": "eva_we10_0001.png",
+	"fog": "eva_we02_0001.png",
+	"snow": "eva_we04_0001.png",
+	"showers-day": "eva_we09_0001.png",
+	"showers-night": "eva_we10_0001.png",
+	"wind": "eva_we13_0001.png"
+}
+const iconTranslationsWeather = {
+	"partly-cloudy-night": Enum_Weather.Cloudy,
+	"partly-cloudy-day": Enum_Weather.Cloudy,
+	"cloudy": Enum_Weather.Cloudy,
+	"clear-night": Enum_Weather.Sunny,
+	"clear-day": Enum_Weather.Sunny,
+	"rain": Enum_Weather.Rain,
+	"thunder-rain": Enum_Weather.Rain,
+	"thunder-showers-day": Enum_Weather.Rain,
+	"thunder-showers-night": Enum_Weather.Rain,
+	"fog": Enum_Weather.Cloudy,
+	"snow": Enum_Weather.Snow,
+	"showers-day": Enum_Weather.Rain,
+	"showers-night": Enum_Weather.Rain,
+	"wind": Enum_Weather.Sunny,
+}
+
 var img_rei_body = document.getElementById("img_rei_body");
 var img_rei_eye = document.getElementById("img_rei_eye");
 var img_rei_mouth = document.getElementById("img_rei_mouth");
 var img_background = document.getElementById("img_bg");
 var img_foreground = document.getElementById("img_fg");
+
+var img_weatherreportbg = document.getElementById("img_gui_weatherbox");
+
+
+var flex_gui_weatherbox = document.getElementById("flex_gui_weatherbox");
+
+
+function init_flex_gui_weatherbox()
+{
+	for (let i = 0; i<7; i++)
+	{
+		flex_gui_weatherbox.innerHTML += "<div><p1>test</p1><br><img src = \"assets/drawable/eva_we01_0001.png\" alt=\"HTML5\" id = \"icon\"></div>";
+	}
+}
+
+init_flex_gui_weatherbox()
 
 var weather = Enum_Weather.Sunny;
 var temperature = Enum_Temperature.Normal;
@@ -75,6 +124,27 @@ updatingData = false;
 nextupdateData = 0;
 
 weather_forecast_days = {}
+const daysOfWeek = {
+	0:"Sun",
+	1:"Mon",
+	2:"Tue",
+	3:"Wed",
+	4:"Thu",
+	5:"Fri",
+	6:"Sat"
+}
+function update_flex_gui_weatherbox()
+{
+	const children = flex_gui_weatherbox.children;
+	for (let i =0; i < children.length; i++)
+	{
+		var obj = children[i]
+		const d = new Date(weather_forecast_days[i].datetime)
+		obj.children[0].textContent = daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
+		obj.children[2].src = "assets\\drawable\\" + iconTranslationsImage[weather_forecast_days[i].icon];
+	}
+}
+
 function set_background(bg)
 {
 	img_background.src = "assets\\drawable\\" + backgrounds[bg]
@@ -91,7 +161,11 @@ function set_mouth(mouth)
 {
 	img_rei_mouth.src = "assets\\drawable\\" + rei_mouth[mouth]
 }
-
+function set_emotion(emote)
+{
+	set_eye(emote)
+	set_mouth(emote)
+}
 
 
 function update_background()
@@ -131,24 +205,35 @@ function update_rei() // Temporary
 	if (weather == Enum_Weather.Sunny)
 	{
 		set_outfit(0);
+		set_emotion(0)
 		if (temperature == Enum_Temperature.Cold)
+		{
 			set_outfit(4);
+		}
 		else if (temperature == Enum_Temperature.Hot)
+		{
 			set_outfit(1);
+		}
 	}
 	else if (weather == Enum_Weather.Cloudy)
 	{
 		set_outfit(2);
+		set_emotion(0)
 		if (temperature == Enum_Temperature.Cold)
+		{
 			set_outfit(4);
+			set_emotion(0)
+		}
 	}
 	else if (weather == Enum_Weather.Rain)
 	{
 		set_outfit(3);
+		set_emotion(1)
 	}
 	else if (weather == Enum_Weather.Snow)
 	{
 		set_outfit(5);
+		set_emotion(0)
 	}
 }
 
@@ -192,6 +277,12 @@ function httpGetAsync(theUrl, callback)
     xmlHttp.open("GET", theUrl, true); // true for asynchronous 
     xmlHttp.send(null);
 }
+function weather_forecast_box_set_visible(visible)
+{
+	var vis = visible ? 'visible' : 'hidden';
+	img_gui_weatherbox.style.visible = vis;
+	
+}
 function get_weather(glocation, date1, date2,apikey)
 {
 	if (apikey == null)
@@ -204,12 +295,12 @@ function get_weather(glocation, date1, date2,apikey)
 		weather_forecast_days = data.days
 		day0Data = data.days[0]
 		weather = Enum_Weather.Sunny
-		if (day0Data.cloudcover >= 50)
-			weather = Enum_Weather.Cloudy
-		if (day0Data.precip > 0)
-			weather = Enum_Weather.Rain;
-		if (day0Data.snow > 0)
-			weather = Enum_Weather.Snow;
+		//console.log("Check " + day0Data.icon)
+		if (iconTranslationsWeather[day0Data.icon])
+		{
+			//console.log("Set Weather to " + day0Data.icon)
+			weather = iconTranslationsWeather[day0Data.icon]
+		}
 		
 		temperature = Enum_Temperature.Normal;
 		if (day0Data.tempmin < 8.0)
@@ -223,6 +314,7 @@ function get_weather(glocation, date1, date2,apikey)
 		updatingData = false;
 		update_background();
 		update_rei();
+		update_flex_gui_weatherbox()
 
 	})
 }

@@ -11,27 +11,43 @@ p {
 
 .background_image {
   position: absolute;
-  left: 50px;
-  top: 50px;
+  left: 0px;
+  top: 0px;
  
 }
 .rei_body_image {
   position: relative;
-  margin: 42px;
+  margin: -8px;
 }
 .rei_eye_image {
   position: relative;
-  margin: 42px;
-  left: -380px;
+  margin: -8px;
+  left: -280px;
   top: -435px;
 }
 .rei_mouth_image {
   position: relative;
   margin: 42px;
-  left: -555px;
-  top: -410px;
+  left: -406px;
+  top: -355px;
 }
 .foreground_image {
   position: absolute;
-  left: 50px;
-  top: 50px;
+  left: 0px;
+  top: 0px;
+}
+.weatherreport_box {
+  position: absolute;
+  left: 0;
+  top: 610px;
+}
+.flex-container {
+  position: relative;
+  left: 100px;
+  bottom: 80px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  #align-content: space-around;
+  
+}
