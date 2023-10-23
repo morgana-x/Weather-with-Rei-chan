@@ -109,7 +109,16 @@ function init_flex_gui_weatherbox()
 {
 	for (let i = 0; i<7; i++)
 	{
-		flex_gui_weatherbox.innerHTML += "<div><p1>test</p1><br><img src = \"assets/drawable/eva_we01_0001.png\" alt=\"HTML5\" id = \"icon\"></div>";
+		flex_gui_weatherbox.innerHTML += "<div class=\"flex-container2\">" +
+		"<p style=\"text-align:center;\">test</p>"
+		+"<img src = \"assets/drawable/eva_we01_0001.png\" alt=\"HTML5\" id = \"icon\">"
+		+"<p style=\"text-align:center;\">0%</p>"
+		+"<div align=center><span style=\"color:blue\">0</span>"
+		+"<span style=\"color:#000000\">/</span>"
+		+"<span style=\"color:red\">10</span></div>"
+
+		//+"<p style=\"text-align:center;\"></p>"
+		+"</div>";
 	}
 }
 
@@ -141,7 +150,10 @@ function update_flex_gui_weatherbox()
 		var obj = children[i]
 		const d = new Date(weather_forecast_days[i].datetime)
 		obj.children[0].textContent = daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
-		obj.children[2].src = "assets\\drawable\\" + iconTranslationsImage[weather_forecast_days[i].icon];
+		obj.children[1].src = "assets\\drawable\\" + iconTranslationsImage[weather_forecast_days[i].icon];
+		obj.children[2].textContent = Math.round(weather_forecast_days[i].precip).toString() + "%";
+		obj.children[3].children[0].textContent = Math.round(weather_forecast_days[i].tempmin).toString();
+		obj.children[3].children[2].textContent = Math.round(weather_forecast_days[i].tempmax).toString(); 
 	}
 }
 

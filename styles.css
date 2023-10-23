@@ -5,7 +5,9 @@ h1 {
   color: blue;
 }
 p {
-  color: red;
+  color: black;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -44,10 +46,22 @@ p {
 .flex-container {
   position: relative;
   left: 100px;
-  bottom: 80px;
+  bottom: 100px;
   display: flex;
   flex-direction: row;
   gap: 10px;
   #align-content: space-around;
   
+}
+.flex-container2 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
