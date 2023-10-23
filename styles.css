@@ -13,6 +13,7 @@ p {
   position: absolute;
   left: 50px;
   top: 50px;
+ 
 }
 .rei_body_image {
   position: relative;
@@ -30,3 +31,7 @@ p {
   left: -555px;
   top: -410px;
 }
+.foreground_image {
+  position: absolute;
+  left: 50px;
+  top: 50px;

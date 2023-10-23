@@ -64,15 +64,17 @@ var img_rei_body = document.getElementById("img_rei_body");
 var img_rei_eye = document.getElementById("img_rei_eye");
 var img_rei_mouth = document.getElementById("img_rei_mouth");
 var img_background = document.getElementById("img_bg");
-
+var img_foreground = document.getElementById("img_fg");
 
 var weather = Enum_Weather.Sunny;
 var temperature = Enum_Temperature.Normal;
 var time = Enum_Time.Day;
-var currentLocation;
+var currentLocation = null;
 
 updatingData = false;
 nextupdateData = 0;
+
+weather_forecast_days = {}
 function set_background(bg)
 {
 	img_background.src = "assets\\drawable\\" + backgrounds[bg]
@@ -129,14 +131,24 @@ function update_rei() // Temporary
 	if (weather == Enum_Weather.Sunny)
 	{
 		set_outfit(0);
+		if (temperature == Enum_Temperature.Cold)
+			set_outfit(4);
+		else if (temperature == Enum_Temperature.Hot)
+			set_outfit(1);
 	}
 	else if (weather == Enum_Weather.Cloudy)
 	{
 		set_outfit(2);
+		if (temperature == Enum_Temperature.Cold)
+			set_outfit(4);
 	}
 	else if (weather == Enum_Weather.Rain)
 	{
 		set_outfit(3);
+	}
+	else if (weather == Enum_Weather.Snow)
+	{
+		set_outfit(5);
 	}
 }
 
@@ -144,7 +156,7 @@ function update_time()
 {
 	var date = new Date();
 	hours = date.getHours()
-	console.log("Current time 24/7: " + hours)
+	//console.log("Current time 24/7: " + hours)
 	
 
 
@@ -184,16 +196,30 @@ function get_weather(glocation, date1, date2,apikey)
 {
 	if (apikey == null)
 		apikey = "9AG8WWTG27V59J756BUFHYLUE";
-	//l = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + glocation + "/"+ date1 + "/" + date2 + "?key=" + apikey
-	l = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/993%20Bridgewater%20Lakes%20Rd?unitGroup=metric&key=9AG8WWTG27V59J756BUFHYLUE&contentType=json"
+	l = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + currentLocation + "?unitGroup=metric&key=9AG8WWTG27V59J756BUFHYLUE&contentType=json"
 	httpGetAsync(l, function(responseText)
 	{
 		console.log(responseText)
 		data = JSON.parse(responseText)
+		weather_forecast_days = data.days
 		day0Data = data.days[0]
 		weather = Enum_Weather.Sunny
 		if (day0Data.cloudcover >= 50)
 			weather = Enum_Weather.Cloudy
+		if (day0Data.precip > 0)
+			weather = Enum_Weather.Rain;
+		if (day0Data.snow > 0)
+			weather = Enum_Weather.Snow;
+		
+		temperature = Enum_Temperature.Normal;
+		if (day0Data.tempmin < 8.0)
+		{
+			temperature = Enum_Temperature.Cold;
+		}
+		if (day0Data.tempmax < 27.0)
+		{
+			temperature = Enum_Temperature.Hot;
+		}
 		updatingData = false;
 		update_background();
 		update_rei();
@@ -209,11 +235,40 @@ function getLocation() {
 }
 function set_location(loc)
 {
-	currentLocation =  loc.coords.latitude.toString() + loc.coords.longitude.toString();
+	currentLocation =  loc.coords.latitude.toString() + "," + loc.coords.longitude.toString();
 	console.log("Current location " + currentLocation)
+}
+
+current_fg_anime_id = 1;
+current_fg_anime_id_2 = 0;
+function foreground_animate()
+{
+	if (weather == Enum_Weather.Sunny || weather == Enum_Weather.Cloudy)
+	{
+		img_foreground.style.visibility = 'hidden';
+		return;
+	}
+	img_foreground.style.visibility = 'visible';
+	current_fg_anime_id = current_fg_anime_id + 1
+	if (current_fg_anime_id > 2)
+	{
+		current_fg_anime_id = 1
+		current_fg_anime_id_2 = current_fg_anime_id_2 + 1
+		if (current_fg_anime_id_2 > 1)
+			current_fg_anime_id_2 = 0
+	}
+	
+	var src =  "assets\\drawable\\" + ((weather == Enum_Weather.Rain) ? "rain": "snow") + "_0" + current_fg_anime_id_2 +  "_" + current_fg_anime_id.toString() + ".png"
+	img_foreground.src = src;
+	
 }
 function update_stuff()
 {
+	foreground_animate()
+	if (currentLocation == null)
+	{
+		return;
+	}
 	if (updatingData)
 	{
 		return;
@@ -240,4 +295,4 @@ set_eye(0);
 set_mouth(0);
 
 
-setInterval(update_stuff, 2000)
+setInterval(update_stuff, 150)
