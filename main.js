@@ -228,6 +228,7 @@ function update_stuff()
 	console.log("Next update: " + nextupdateData)
 	console.log(Date.now() - nextupdateData)
 	//date = new Date();
+	update_time();
 	get_weather(currentLocation, Date.now(), Date.now()+ 604800000)
 }
 //update_time();
