@@ -90,3 +90,42 @@ p {
 .rei_chatbox_small_bg{
   position: relative;
 }
+
+.borderstrip{
+  position: relative;
+  top: -1680px;
+  left: -8px;
+   z-index: 1;
+}
+.borderstripline{
+  position: relative;
+  top: -1720px;
+  left: -500px;
+  z-index: 1;
+}
+.settings_button{
+  position: relative;
+  top: -1615px;
+  left: -980px;
+  z-index: 0;
+}
+.gps_button{
+  position: relative;
+  top: -1615px;
+  left: -655px;
+  z-index: 0;
+}
+.info_button{
+  position: relative;
+  z-index: 0;
+  top: -1525px;
+  left: -1145px;
+  width: 141px;
+  height: 111px;
+}
+.info_weather{
+  position: relative;
+  z-index: 0;
+  top: -1350px;
+  left: -1290px;
+}

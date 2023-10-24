@@ -106,6 +106,29 @@ var flex_gui_weatherbox = document.getElementById("flex_gui_weatherbox");
 
 var gui_textboxsmall = document.getElementById("rei_chatbox_small");
 
+var button_settings = document.getElementById("button_settings");
+
+var button_gps = document.getElementById("button_gps");
+
+var button_info = document.getElementById("button_info");
+
+var button_info_weather = document.getElementById("button_info_weather");
+
+
+function toggle_button_info()
+{
+	set_button_info_visible( !(button_info_weather.style.visibility == 'visible'))
+}
+function set_button_info_visible(visible)
+{
+	button_info_weather.style.visibility = (visible) ? 'visible' : 'hidden';
+	
+	button_info.src = !visible ? "assets/drawable/info.png" : "assets/drawable/info_on.png";
+}
+button_info.onclick = toggle_button_info;
+button_info_weather.onclick = toggle_button_info;
+set_button_info_visible(false);
+
 function init_flex_gui_weatherbox()
 {
 	for (let i = 0; i<7; i++)
