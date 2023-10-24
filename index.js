@@ -92,6 +92,7 @@ const iconTranslationsWeather = {
 	"showers-night": Enum_Weather.Rain,
 	"wind": Enum_Weather.Sunny,
 }
+var weatherDisplayIsHourly;
 
 var img_rei_body = document.getElementById("img_rei_body");
 var img_rei_eye = document.getElementById("img_rei_eye");
@@ -129,9 +130,19 @@ button_info.onclick = toggle_button_info;
 button_info_weather.onclick = toggle_button_info;
 set_button_info_visible(false);
 
+img_weatherreportbg.onclick = function()
+{
+	weatherDisplayIsHourly = !weatherDisplayIsHourly;
+	img_weatherreportbg.src = !weatherDisplayIsHourly ? "assets/drawable/obi_syuukann_w.png" : "assets/drawable/obi_jikanbetu_w.png";
+	update_flex_gui_weatherbox()
+	//updatingData = true;
+	//nextupdateData = Date.now() + 600000
+	//update_time();
+	//get_weather(currentLocation, Date.now(), Date.now()+ 604800000, weatherDisplayIsHourly)
+}
 function init_flex_gui_weatherbox()
 {
-	for (let i = 0; i<7; i++)
+	for (let i = 0; i<8; i++)
 	{
 		flex_gui_weatherbox.innerHTML += "<div class=\"flex-container2\">" +
 		"<p style=\"text-align:center;\">test</p>"
@@ -153,6 +164,8 @@ var temperature = Enum_Temperature.Normal;
 var time = Enum_Time.Day;
 var currentLocation = null;
 
+
+
 updatingData = false;
 nextupdateData = 0;
 
@@ -169,17 +182,42 @@ const daysOfWeek = {
 }
 function update_flex_gui_weatherbox()
 {
-	const children = flex_gui_weatherbox.children;
-	for (let i =0; i < children.length; i++)
+	if (!weatherDisplayIsHourly)
 	{
-		var obj = children[i]
-		const d = new Date(weather_forecast_days[i].datetime)
-		obj.children[0].textContent = daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
-		obj.children[1].src = "assets\\drawable\\" + iconTranslationsImage[weather_forecast_days[i].icon];
-		obj.children[2].textContent = Math.round(weather_forecast_days[i].precip).toString() + "%";
-		obj.children[3].children[0].textContent = Math.round(weather_forecast_days[i].tempmin).toString();
-		obj.children[3].children[2].textContent = Math.round(weather_forecast_days[i].tempmax).toString(); 
+		const children = flex_gui_weatherbox.children;
+		for (let i =0; i < children.length; i++)
+		{
+			var obj = children[i]
+		
+			const d = new Date(weather_forecast_days[i].datetime)
+			obj.children[0].textContent = daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
+			obj.children[1].src = "assets\\drawable\\" + iconTranslationsImage[weather_forecast_days[i].icon];
+			//obj.children[1].style.top = '0px';
+			obj.children[2].textContent = Math.round(weather_forecast_days[i].precip).toString() + "%";
+			obj.children[2].style.height = '15%';
+			obj.children[3].children[0].textContent = Math.round(weather_forecast_days[i].tempmin).toString();
+			obj.children[3].children[2].textContent = Math.round(weather_forecast_days[i].tempmax).toString();
+			obj.children[3].children[1].textContent = "/";	
+		}
+		return;
 	}
+	const children = flex_gui_weatherbox.children;
+		for (let i =0; i < children.length; i++)
+		{
+			var obj = children[i]
+			//obj.style.visibility = 'visible'	
+			var weatherobj = weather_forecast_days[0].hours[i * 3]
+			const d = new Date(weatherobj.datetime)
+			
+			obj.children[0].textContent = ""// weatherobj.datetime; //daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
+			obj.children[1].src = "assets\\drawable\\" + iconTranslationsImage[weatherobj.icon];
+			//obj.children[1].style.top = '20px';
+			obj.children[2].textContent = Math.round(weatherobj.precip).toString() + "%";
+			obj.children[2].style.height = '20%';
+			obj.children[3].children[0].textContent = ""//Math.round(weatherobj.tempmin).toString();
+			obj.children[3].children[2].textContent = "" //Math.round(weatherobj.tempmax).toString();
+			obj.children[3].children[1].textContent = Math.round(weatherobj.temp);
+		}
 }
 var textboxVisibleTime = 0
 function set_textbox_visible(visible)
@@ -334,7 +372,7 @@ function weather_forecast_box_set_visible(visible)
 	img_gui_weatherbox.style.visible = vis;
 	
 }
-function get_weather(glocation, date1, date2,apikey)
+function get_weather(glocation, date1, date2,apikey, hourly)
 {
 	if (apikey == null)
 		apikey = "9AG8WWTG27V59J756BUFHYLUE";
@@ -344,6 +382,7 @@ function get_weather(glocation, date1, date2,apikey)
 		console.log(responseText)
 		data = JSON.parse(responseText)
 		weather_forecast_days = data.days;
+		weather_forecast_hours = data.days[0].hours;
 		weather_forecast = data;
 		day0Data = data.currentConditions //days[0]
 		weather = Enum_Weather.Sunny
@@ -437,12 +476,8 @@ function update_stuff()
 
 	updatingData = true;
 	nextupdateData = Date.now() + 600000
-	console.log("Current time: " + Date.now())
-	console.log("Next update: " + nextupdateData)
-	console.log(Date.now() - nextupdateData)
-	//date = new Date();
 	update_time();
-	get_weather(currentLocation, Date.now(), Date.now()+ 604800000)
+	get_weather(currentLocation, Date.now(), Date.now()+ 604800000, weatherDisplayIsHourly)
 }
 //update_time();
 //getLocation()

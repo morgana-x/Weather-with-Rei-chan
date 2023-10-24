@@ -58,6 +58,7 @@ p {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  pointer-events:none;
   #align-content: space-around;
   
 }
