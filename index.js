@@ -104,6 +104,7 @@ var img_weatherreportbg = document.getElementById("img_gui_weatherbox");
 
 var flex_gui_weatherbox = document.getElementById("flex_gui_weatherbox");
 
+var gui_textboxsmall = document.getElementById("rei_chatbox_small");
 
 function init_flex_gui_weatherbox()
 {
@@ -111,7 +112,7 @@ function init_flex_gui_weatherbox()
 	{
 		flex_gui_weatherbox.innerHTML += "<div class=\"flex-container2\">" +
 		"<p style=\"text-align:center;\">test</p>"
-		+"<img src = \"assets/drawable/eva_we01_0001.png\" alt=\"HTML5\" id = \"icon\">"
+		+"<img src = \"assets/drawable/eva_we01_0001.png\" alt=\"HTML5\" id = \"icon\" class = \"weatherreport_icon\">"
 		+"<p style=\"text-align:center;\">0%</p>"
 		+"<div align=center><span style=\"color:blue\">0</span>"
 		+"<span style=\"color:#000000\">/</span>"
@@ -133,6 +134,7 @@ updatingData = false;
 nextupdateData = 0;
 
 weather_forecast_days = {}
+weather_forecast = {}
 const daysOfWeek = {
 	0:"Sun",
 	1:"Mon",
@@ -156,6 +158,20 @@ function update_flex_gui_weatherbox()
 		obj.children[3].children[2].textContent = Math.round(weather_forecast_days[i].tempmax).toString(); 
 	}
 }
+var textboxVisibleTime = 0
+function set_textbox_visible(visible)
+{
+	gui_textboxsmall.style.visibility = visible ? 'visible' : 'hidden';
+}
+function get_textbox_visible()
+{
+	return (gui_textboxsmall.style.visibility == 'visible')
+}
+function set_textbox_text(txt)
+{
+	gui_textboxsmall.children[1].textContent = txt;
+}
+
 
 function set_background(bg)
 {
@@ -304,8 +320,9 @@ function get_weather(glocation, date1, date2,apikey)
 	{
 		console.log(responseText)
 		data = JSON.parse(responseText)
-		weather_forecast_days = data.days
-		day0Data = data.days[0]
+		weather_forecast_days = data.days;
+		weather_forecast = data;
+		day0Data = data.currentConditions //days[0]
 		weather = Enum_Weather.Sunny
 		//console.log("Check " + day0Data.icon)
 		if (iconTranslationsWeather[day0Data.icon])
@@ -327,6 +344,8 @@ function get_weather(glocation, date1, date2,apikey)
 		update_background();
 		update_rei();
 		update_flex_gui_weatherbox()
+		set_textbox_text(data.description)
+		textboxVisibleTime = Date.now() + 10000
 
 	})
 }
@@ -366,24 +385,36 @@ function foreground_animate()
 	img_foreground.src = src;
 	
 }
+function textbox_visiblity_update()
+{
+
+	if (Date.now() >= textboxVisibleTime)
+	{
+		set_textbox_visible(false);
+		return;
+	}
+	set_textbox_visible(true);
+}
 function update_stuff()
 {
 	foreground_animate()
+	textbox_visiblity_update();
 	if (currentLocation == null)
 	{
+		set_textbox_text("It seems there is no access to location.")
+		set_textbox_visible(true)
 		return;
 	}
 	if (updatingData)
 	{
 		return;
 	}
-	date = new Date();
 	if (Date.now() < nextupdateData)
 		return;
 
 	updatingData = true;
 	nextupdateData = Date.now() + 600000
-	console.log("Current time: " + date.now)
+	console.log("Current time: " + Date.now())
 	console.log("Next update: " + nextupdateData)
 	console.log(Date.now() - nextupdateData)
 	//date = new Date();
