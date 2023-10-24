@@ -46,22 +46,20 @@ p {
   left: 0;
   top: 610px;
 }
-.weatherreport_icon {
-  width:42px;
-  height:42p;
-}
-.flex-container {
+.weatherbox_flex{
   position: relative;
   left: 78px;
   top: -1030px;
-  #bottom: 0px;
   display: flex;
   flex-direction: row;
   gap: 10px;
   pointer-events:none;
-  #align-content: space-around;
-  
 }
+.weatherreport_icon {
+  width:42px;
+  height:42p;
+}
+
 .flex-container2 {
   position: relative;
   display: flex;
