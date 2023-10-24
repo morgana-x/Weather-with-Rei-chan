@@ -182,13 +182,24 @@ const daysOfWeek = {
 }
 function update_flex_gui_weatherbox()
 {
+	flex_gui_weatherbox.style.gap = "10px";
 	if (!weatherDisplayIsHourly)
 	{
 		const children = flex_gui_weatherbox.children;
 		for (let i =0; i < children.length; i++)
 		{
 			var obj = children[i]
-		
+			obj.style.top = "0px";
+			obj.style.gap = "0px";
+			if (i > 6)
+			{
+				obj.style.visibility = 'hidden'
+				break;
+			}
+			else
+			{
+				obj.style.visibility = 'visible'
+			}
 			const d = new Date(weather_forecast_days[i].datetime)
 			obj.children[0].textContent = daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
 			obj.children[1].src = "assets\\drawable\\" + iconTranslationsImage[weather_forecast_days[i].icon];
@@ -201,17 +212,22 @@ function update_flex_gui_weatherbox()
 		}
 		return;
 	}
+	//flex_gui_weatherbox.style.top = -100;
+	flex_gui_weatherbox.style.gap = "8px"; // this is for between objects!
 	const children = flex_gui_weatherbox.children;
 		for (let i =0; i < children.length; i++)
 		{
+			
 			var obj = children[i]
+			obj.style.visibility = 'visible'
+			obj.style.top = "10px";
+			obj.style.gap = "0px";
 			//obj.style.visibility = 'visible'	
 			var weatherobj = weather_forecast_days[0].hours[i * 3]
 			const d = new Date(weatherobj.datetime)
-			
-			obj.children[0].textContent = ""// weatherobj.datetime; //daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
+			obj.children[0].textContent = " "// weatherobj.datetime; //daysOfWeek[d.getDay()]//d.getDay() + "/" + d.getMonth();
 			obj.children[1].src = "assets\\drawable\\" + iconTranslationsImage[weatherobj.icon];
-			//obj.children[1].style.top = '20px';
+
 			obj.children[2].textContent = Math.round(weatherobj.precip).toString() + "%";
 			obj.children[2].style.height = '20%';
 			obj.children[3].children[0].textContent = ""//Math.round(weatherobj.tempmin).toString();

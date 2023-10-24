@@ -53,8 +53,8 @@ p {
 .flex-container {
   position: relative;
   left: 78px;
-  #bottom: 105px;
-  top: -105px;
+  top: -1030px;
+  #bottom: 0px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -78,7 +78,7 @@ p {
 .rei_chatbox_small{
   	position: relative;
 	left: 42px;
-    bottom: 350px;
+    bottom: 225px;
 	visibility: hidden;
 }
 .textboxsmall_text{
@@ -94,32 +94,32 @@ p {
 
 .borderstrip{
   position: relative;
-  top: -1680px;
+  top: -1560px;
   left: -8px;
    z-index: 1;
 }
 .borderstripline{
   position: relative;
-  top: -1720px;
+  top: -1600px;
   left: -500px;
   z-index: 1;
 }
 .settings_button{
   position: relative;
-  top: -1615px;
+  top: -1490px;
   left: -980px;
   z-index: 0;
 }
 .gps_button{
   position: relative;
-  top: -1615px;
+  top: -1490px;
   left: -655px;
   z-index: 0;
 }
 .info_button{
   position: relative;
   z-index: 0;
-  top: -1525px;
+  top: -1400px;
   left: -1145px;
   width: 141px;
   height: 111px;
@@ -127,6 +127,6 @@ p {
 .info_weather{
   position: relative;
   z-index: 0;
-  top: -1350px;
+  top: -1220px;
   left: -1290px;
 }
