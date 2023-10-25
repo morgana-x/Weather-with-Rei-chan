@@ -1,5 +1,7 @@
 body {
-  background-color: powderblue;
+  background-color: black;
+  width: 480px;
+  height: 720px;
 }
 h1 {
   color: blue;
@@ -19,20 +21,20 @@ p {
  
 }
 .rei_body_image {
-  position: relative;
+  position: absolute;
   margin: -8px;
 }
 .rei_eye_image {
-  position: relative;
+  position: absolute;
   margin: -8px;
-  left: -278px;
-  top: -435px;
+  left: 200px;
+  top: 225px;
 }
 .rei_mouth_image {
-  position: relative;
+  position: absolute;
   margin: 42px;
-  left: -406px;
-  top: -355px;
+  left: 177px;
+  top: 245px;
 }
 
 .foreground_image {
@@ -47,9 +49,9 @@ p {
   top: 610px;
 }
 .weatherbox_flex{
-  position: relative;
-  left: 78px;
-  top: -1030px;
+  position: absolute;
+  left: 85px;
+  top: 620px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -75,8 +77,8 @@ p {
 
 .rei_chatbox_small{
   	position: relative;
-	left: 42px;
-    bottom: 225px;
+	left: 50px;
+    top: 455px;
 	visibility: hidden;
 }
 .textboxsmall_text{
@@ -91,40 +93,40 @@ p {
 }
 
 .borderstrip{
-  position: relative;
-  top: -1560px;
-  left: -8px;
-   z-index: 1;
+  position: absolute;
+  top: -700px;
+  left: 0px;
+  z-index: 1;
 }
 .borderstripline{
-  position: relative;
-  top: -1600px;
-  left: -500px;
+  position: absolute;
+  top: 20px;
+  left: 0px;
   z-index: 1;
 }
 .settings_button{
-  position: relative;
-  top: -1490px;
-  left: -980px;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 0;
 }
 .gps_button{
-  position: relative;
-  top: -1490px;
-  left: -655px;
+  position: absolute;
+  top: 0px;
+  left: 405px;
   z-index: 0;
 }
 .info_button{
-  position: relative;
+  position: absolute;
   z-index: 0;
-  top: -1400px;
-  left: -1145px;
+  top:  150px;
+  left: 0px;
   width: 141px;
   height: 111px;
 }
 .info_weather{
-  position: relative;
+  position: absolute;
   z-index: 0;
-  top: -1220px;
-  left: -1290px;
+  top: 260px;
+  left: 0px;
 }
